@@ -1,0 +1,7 @@
+[Unit]
+Description=Dockerized Plex Media Server
+
+[Service]
+ExecStart=docker run -v /mnt/media:/mnt/media \
+                    -v /var/lib/plexmediaserver:/var/lib/plex/mediaserver \
+                     plex:latest

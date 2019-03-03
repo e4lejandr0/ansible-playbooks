@@ -1,0 +1,17 @@
+---
+- name: install docker
+  dnf:
+    name: docker
+    state: latest
+
+- name: create docker group
+  group:
+    name: docker
+    gid: 2000
+
+- name: add akdev to docker group
+  user:
+    name: akdev
+    groups: docker
+    append: true
+

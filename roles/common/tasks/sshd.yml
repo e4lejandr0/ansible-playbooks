@@ -15,3 +15,10 @@
   systemd:
     name: sshd
     state: restarted
+
+- name: add sshd to firewall
+  firewalld:
+    immediate: yes
+    port: 1022/tcp
+    state: enabled
+

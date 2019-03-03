@@ -1,0 +1,48 @@
+---
+- name: enable docker
+  include_role:
+    name: docker
+
+- name: create /mnt/media
+  file:
+    state: directory
+    path: /mnt/media
+
+- name: set selinux context
+  command: chcon -Rt svirt_sandbox_file_t /mnt/media/Videos
+
+- name: set selinux internal data context 
+  command: chcon -Rt svirt_sandbox_file_t /var/lib/plexmediaserver
+
+- name: deploy docker container
+  copy:
+    src: Dockerfile
+    dest: /tmp/Dockerfile
+
+- name: build container image
+  command: docker build /tmp -t plex:latest
+
+- name: install web server
+  include_role: 
+    name: apache-server
+
+- name: enable plex reverse proxy
+  copy:
+    src: media.akdev.conf
+    dest: /etc/httpd
+
+- name: create plex home
+  file:
+    path: /var/lib/plexmediaserver
+    state: directory
+
+- name: deploy docker-plex.service
+  copy:
+    src: docker-plex.service
+    dest: /etc/systemd/system
+
+- name: systemd daemon reload
+  systemd:
+    daemon_reload: true
+
+# tasks file for plex
