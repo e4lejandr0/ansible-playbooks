@@ -1,0 +1,7 @@
+[Unit]
+Description=HTTP Gateway
+
+[Service]
+ExecStart=docker run --rm -d --net=host \
+                        -v /etc/httpd/conf.d:/etc/httpd/conf.d \
+                        gateway-service:latest

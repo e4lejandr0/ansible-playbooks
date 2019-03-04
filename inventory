@@ -5,3 +5,16 @@ ansible_port=1022
 [all]
 media.akdev.home
 donatello.akdev.home 
+ns1.akdev.home
+
+[plex-servers]
+media.akdev.home
+
+[dns-servers]
+ns1.akdev.home
+
+[desktops]
+donatello.akdev.home
+
+[dhcp-servers]
+ns1.akdev.home

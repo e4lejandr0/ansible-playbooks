@@ -1,7 +1,13 @@
 [Unit]
 Description=Dockerized Plex Media Server
+After=network.target
 
 [Service]
-ExecStart=docker run -v /mnt/media:/mnt/media \
-                    -v /var/lib/plexmediaserver:/var/lib/plex/mediaserver \
-                     plex:latest
+ExecStart=docker run -d --name plex \
+                    --net=host \
+                    -e TZ=America/Toronto \
+                    -e PLEX_CLAIM=claim-76xY3yhjFUKVC9eCpPAF \
+                    -e PLEX_UID=1000 \
+                    -e PLEX_GID=1000 \
+                    -v /mnt/media:/data \
+                    plexinc/pms-docker

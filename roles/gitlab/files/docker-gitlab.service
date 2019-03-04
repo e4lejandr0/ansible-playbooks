@@ -1,0 +1,12 @@
+[Unit]
+Description=Gitlab Docker Container
+
+[Service]
+ExecStart=docker run --hostname gitlab.akdev.home \
+                    --publish 1024:22 \
+                    --name gitlab \
+                    --restart always \
+                    --volume /etc/gitlab:/etc/gitlab \
+                    --volume /var/log/gitlab:/var/log/gitlab \
+                    --volume /var/opt/gitlab \
+                    gitlab/gitlab-ce:latest
