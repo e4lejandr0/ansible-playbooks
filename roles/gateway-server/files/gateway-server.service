@@ -1,5 +1,9 @@
 [Unit]
 Description=HTTP Gateway
+After=network.target
+
+[Install]
+WantedBy=multi-user.target
 
 [Service]
 ExecStart=docker run --rm \
