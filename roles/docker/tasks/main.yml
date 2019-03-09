@@ -15,3 +15,6 @@
     groups: docker
     append: true
 
+- name: create docker network akdev0
+  docker_network:
+    name: akdev0

@@ -2,16 +2,9 @@
 Description=Dockerized Plex Media Server
 After=network.target
 
+[Install]
+WantedBy=multi-user.target
+
 [Service]
-ExecStartPre=docker run -d --name plex \
-                    --net=host \
-                    -e TZ=America/Toronto \
-                    -e PLEX_CLAIM=claim-76xY3yhjFUKVC9eCpPAF \
-                    -e PLEX_UID=1000 \
-                    -e PLEX_GID=1000 \
-                    -v /mnt/media:/data \
-                    -v /etc/plexmediaserver:/config \
-                    plexinc/pms-docker
 ExecStart=docker start plex
 ExecStop=docker stop plex
-ExecStopPost=docker rm -f plex

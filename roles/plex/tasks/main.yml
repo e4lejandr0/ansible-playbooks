@@ -22,6 +22,27 @@
     src: docker-plex.service
     dest: /etc/systemd/system
 
+- name: get plex claim
+  pause:
+    prompt: "Please go to https://www.plex.tv/claim and put the claim code here"
+  register: plex_claim
+
+- name: create plex container
+  docker_container:
+    name: plex
+    image: plexinc/pms-docker
+    state: present
+    networks:
+        - name: akdev0
+    volumes:
+      - /var/lib/plexmediaserver:/config
+      - /mnt/media:/data
+    env:
+      TZ: "America/Toronto"  
+      PLEX_CLAIM: "{{ plex_claim }}"
+      ADVERTISE_IP: "{{ ansible_default_ipv4.address }}"
+      HOSTNAME: "{{ inventory_hostname }}" 
+
 - name: systemd daemon reload
   systemd:
     daemon_reload: true
