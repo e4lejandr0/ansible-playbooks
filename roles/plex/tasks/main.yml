@@ -17,11 +17,6 @@
     src: media.akdev.conf
     dest: /etc/httpd/conf.d
 
-- name: deploy docker-plex.service
-  copy:
-    src: docker-plex.service
-    dest: /etc/systemd/system
-
 - name: get plex claim
   pause:
     prompt: "Please go to https://www.plex.tv/claim and put the claim code here"
@@ -32,16 +27,26 @@
     name: plex
     image: plexinc/pms-docker
     state: present
+    dns_servers:
+      - 1.1.1.1
+      - 1.0.0.1
     networks:
-        - name: akdev0
+      - name: akdev0
+    published_ports:
+      - 32400:32400
     volumes:
       - /var/lib/plexmediaserver:/config
       - /mnt/media:/data
     env:
       TZ: "America/Toronto"  
-      PLEX_CLAIM: "{{ plex_claim }}"
-      ADVERTISE_IP: "{{ ansible_default_ipv4.address }}"
-      HOSTNAME: "{{ inventory_hostname }}" 
+      PLEX_CLAIM: "\"{{ plex_claim.user_input }}\""
+      ADVERTISE_IP: "http://media.akdev.xyz,http://plex:32400"
+      HOSTNAME: "media.akdev.xyz"
+
+- name: deploy plex-media-server.service
+  copy:
+    src: plex-media-server.service
+    dest: /etc/systemd/system
 
 - name: systemd daemon reload
   systemd:

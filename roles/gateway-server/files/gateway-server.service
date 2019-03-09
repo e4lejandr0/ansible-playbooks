@@ -2,6 +2,13 @@
 Description=HTTP Gateway
 
 [Service]
-ExecStart=docker run --rm -d --net=host \
-                        -v /etc/httpd/conf.d:/etc/httpd/conf.d \
-                        gateway-service:latest
+ExecStart=docker run --rm \
+                     --attach=stdout \
+                     --attach=stderr \
+                     --name=gateway \
+                     --network=akdev0 \
+                     -p 80:80 \
+                     -v /etc/httpd/conf.d:/etc/httpd/conf.d \
+                     gateway-server
+                     
+                       
