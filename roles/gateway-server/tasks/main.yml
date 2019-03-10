@@ -12,11 +12,16 @@
 
 - name: build docker image
   docker_image:
+    force: true
     name: gateway-server:latest
     path: /tmp/gateway-server-docker
     state: present
-    
 
+- name: listen on HTTPS port
+  copy:
+    src: https.conf
+    dest: /etc/httpd/conf.d
+    
 - name: deploying gateway-server.service
   copy:
     src: gateway-server.service
